@@ -1,0 +1,71 @@
+<!--cela nous permettra d'accéder à l'état de validité du formulaire ailleurs dans le template-->
+<!-- ngSubmit : permet de lier l'évènement de validation du formulaire à la méthode onSubmit définit dans le composant -->
+<!-- ngIf: permet de s'assurer qu'une pizza a bien été transmis au composant du formulaire,
+    Dans le cas contraire, on affiche un msg d'erreur.
+-->
+<form *ngIf="pizza" (ngSubmit)="onSubmit()" #pizzaForm="ngForm">
+  <div class="row">
+    <div class="col s8 offset-s2">
+      <div class="card-panel">
+
+        <!-- pizza name -->
+        <div class="form-group">
+          <label for="name">Nom</label>
+          <input type="text" class="form-control" id="name"
+                 required
+                 pattern="^[a-zA-Z0-9àéèç]{1,25}$"
+                 [(ngModel)]="pizza.name" name="name"
+                 #name="ngModel">
+          <div [hidden]="name.valid || name.pristine" class="card-panel red accent-1">
+            Le nom de la pizza est requis (1-25).
+          </div>
+        </div>
+
+
+        <!-- pizza nurtiscore -->
+        <div class="form-group">
+          <label for="nutriscore">Nutriscore</label>
+          <input type="number" class="form-control" id="nutriscore"
+                 required
+                 pattern="^[0-9]{1,2}$"
+                 [(ngModel)]="pizza.nutriScore" name="nutriscore"
+                 #nutriscore="ngModel">
+          <div [hidden]="nutriscore.valid || nutriscore.pristine" class="card-panel red accent-1">
+            Le nutriscore doit être compris entre 0 et 99.
+          </div>
+        </div>
+
+        <!-- pizza types -->
+        <form class="form-group">
+          <label for="{{ ingredients }}">Ingredients</label>
+          <p *ngFor="let ingredient of ingredients">
+            <label>
+              <input type="checkbox"
+                     class="filled-in"
+                     id="{{ ingredient }}"
+                     [value]="ingredient"
+                     [checked]="HasIngredient(ingredient)"
+                     (change)="selectIngredient($event, ingredient)"
+              />
+              <span [attr.for]="ingredient">
+                <span class="{{ ingredient | pizzaIngredientColor }}">{{ ingredient }}</span>
+              </span>
+            </label>
+          </p>
+        </form>
+
+        <!-- Submit button -->
+        <div class="divider"></div>
+        <div class="section center">
+          <button type="submit"
+                  class="waves-effect waves-light btn"
+                  [disabled]="!pizzaForm.form.valid">
+            Valider
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</form>
+<h3 *ngIf="!pizza" class="center">Aucune Pizza à éditer...</h3>

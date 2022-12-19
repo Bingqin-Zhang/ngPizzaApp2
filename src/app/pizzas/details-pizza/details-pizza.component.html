@@ -1,0 +1,49 @@
+<div *ngIf="pizzaToDisplayed">
+  <div class="col s12 m8 offset-m2">
+    <h2 class="header center">{{ pizzaToDisplayed.name }}</h2>
+    <div class="card horizontal hoverable">
+      <div class="card-image">
+        <img [src]="pizzaToDisplayed.picture">
+      </div>
+      <div class="card-stacked">
+        <div class="card-content">
+          <table class="bordered striped">
+            <tbody>
+            <tr>
+              <td>Nom</td>
+              <td><strong>{{ pizzaToDisplayed.name }}</strong></td>
+            </tr>
+            <tr>
+              <td>Nutriscore</td>
+              <td><strong>{{ pizzaToDisplayed.nutriScore }}</strong></td>
+            </tr>
+            <tr>
+              <td>Ingrédients</td>
+              <td>
+                <!-- Utilisation de la pipe créée précédemment pour afficher les ingredientss -->
+                <span *ngFor="let ingredients of pizzaToDisplayed.compositions" class="{{ ingredients | pizzaIngredientColor }}">{{ ingredients }}</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Date de création</td>
+              <!-- Utilisation de la (| date: format ) pour formater les dates a afficher -->
+              <td><em>{{ pizzaToDisplayed.created | date:"dd/MM/yyyy" }}</em></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Ajout d'une fonction pour gérer le routour arrière (retour à la liste des pizzas) -->
+        <div class="card-action">
+          <a type="button" class="waves-effect waves-light btn margin-button" (click)="goBack()">Retour</a>
+          <a type="button" class="waves-effect waves-light btn margin-button" (click)="editPizza(pizzaToDisplayed)">Editer</a>
+          <a type="button" class="waves-effect waves-light btn margin-button">Supprimer</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sinon, si aucune pizza n'a été trouvée on execute cette partie -->
+<h4 *ngIf="!pizzaToDisplayed" class="center">Aucune pizza à afficher !</h4>

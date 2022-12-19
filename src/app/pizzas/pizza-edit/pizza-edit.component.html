@@ -1,0 +1,6 @@
+<h2 class="header center">Editer {{singlePizza?.name}}</h2>
+
+<p class="center">
+  <img *ngIf="singlePizza" [src]="singlePizza.picture">
+</p>
+<app-pizza-form [pizza]="singlePizza"></app-pizza-form>
